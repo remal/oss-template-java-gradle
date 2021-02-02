@@ -1,2 +1,2 @@
-# oss-template
-Template repository for open-source projects
+# oss-template-java-gradle
+Template repository for OSS Java projects with Gradle
