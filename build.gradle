@@ -14,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath 'name.remal:gradle-plugins:1.2.2'
-        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:0.10'
+        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.0'
     }
     repositories {
         mavenCentral()
