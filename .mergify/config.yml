@@ -9,9 +9,9 @@ pull_request_rules:
 - name: Auto merge approved
   conditions:
   - "#approved-reviews-by>=1"
+  - -conflict
   - -closed
   - -merged
-  - -conflict
   - -draft
   - -locked
   - "#changes-requested-reviews-by=0"
@@ -40,6 +40,7 @@ pull_request_rules:
   - base=master
   - "#approved-reviews-by=0"
   - -author~=^(dependabot(-preview)?|renovate)\[bot\]$
+  - -conflict
   - -closed
   - -merged
   - -locked
@@ -50,9 +51,9 @@ pull_request_rules:
   conditions:
   - author=remal
   - label!=sync-with-template
+  - -conflict
   - -closed
   - -merged
-  - -conflict
   - -draft
   - -locked
   - "#changes-requested-reviews-by=0"
