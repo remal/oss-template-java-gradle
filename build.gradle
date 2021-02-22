@@ -14,7 +14,7 @@ buildscript {
 
     dependencies {
         classpath 'name.remal:gradle-plugins:1.2.2'
-        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:0.10'
+        classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.0'
     }
     repositories {
         mavenCentral()
@@ -47,7 +47,7 @@ allprojects {
 
             conf.dependencies.addAll(
                 [
-                    'org.junit:junit-bom:5.7.0',
+                    'org.junit:junit-bom:5.7.1',
                 ].collect { project.dependencies.platform(it) }
             )
 
@@ -70,7 +70,7 @@ allprojects {
                     'org.jacoco:org.jacoco.agent:0.8.6',
 
                     // Checkstyle
-                    'com.puppycrawl.tools:checkstyle:8.39',
+                    'com.puppycrawl.tools:checkstyle:8.40',
                 ].collect { project.dependencies.constraints.create(it) }
             )
 
