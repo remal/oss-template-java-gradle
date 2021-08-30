@@ -59,7 +59,7 @@ allprojects {
                     'org.jetbrains:annotations:22.0.0',
 
                     // Annotation processors
-                    'org.projectlombok:lombok:1.18.16',
+                    'org.projectlombok:lombok:1.18.20',
                     'org.projectlombok:lombok-mapstruct-binding:0.2.0',
 
                     // Compile
