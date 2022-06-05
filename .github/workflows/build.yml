@@ -55,7 +55,7 @@ jobs:
 
     - name: Cache
       if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: ${{ steps.create-cache-key.outputs.year-month }}-${{ runner.os }}-${{ github.ref }}
         restore-keys: |
