@@ -18,7 +18,7 @@ jobs:
       (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
       || (github.event_name == 'push' && !startsWith(github.event.head_commit.message, '[skip ci]') && !startsWith(github.event.head_commit.message, '[push-back]'))
       || github.event_name != 'push'
-      }}
+     }}
     name: build
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -32,7 +32,6 @@ jobs:
         java-version: 11
         distribution: zulu
 
-
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
@@ -40,30 +39,27 @@ jobs:
         lfs: true
         fetch-depth: 0
 
-    - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
-
     - name: Adjust files to be built on CI
       run: |
         sed -i 's/-all\.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
 
-
-    - name: Create cache key
-      id: create-cache-key
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      run: echo "::set-output name=year-month::$(date '+%Y.%m')"
-
-    - name: Cache
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+    - name: Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Cache Gradle wrapper
+      id: gradle-wrapper
       uses: actions/cache@v3
       with:
-        key: ${{ steps.create-cache-key.outputs.year-month }}-${{ runner.os }}-${{ github.ref }}
-        restore-keys: |
-          ${{ steps.create-cache-key.outputs.year-month }}-${{ runner.os }}-${{ github.ref }}
-          ${{ steps.create-cache-key.outputs.year-month }}-${{ runner.os }}-refs/heads/master
+        key: ${{runner.os}}-gradle-wrapper-${{hashFiles('gradle-wrapper.properties')}}
         path: |
-          ~/.gradle
-          ~/.sonar/cache
+          ~/.gradle/wrapper/dists
+    - name: Cache Gradle caches
+      id: gradle-caches
+      uses: actions/cache@v3
+      with:
+        key: ${{runner.os}}-gradle-caches-${{hashFiles('gradle-wrapper.properties', '**/*.gradle', '**/gradle.properties')}}
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/notifications
 
 
     - name: Compile
@@ -79,16 +75,9 @@ jobs:
 
     - name: Push back
       env:
-        PUSH_BACK_TOKEN: ${{ secrets.PUSH_BACK_TOKEN }}
-      if: ${{ env.PUSH_BACK_TOKEN && github.event_name == 'push' && startsWith(github.ref, 'refs/heads/') }}
+        PUSH_BACK_TOKEN: ${{secrets.PUSH_BACK_TOKEN}}
+      if: ${{env.PUSH_BACK_TOKEN && github.event_name == 'push' && startsWith(github.ref, 'refs/heads/')}}
       uses: remal-github-actions/push-back@v1
       with:
-        githubToken: ${{ env.PUSH_BACK_TOKEN }}
+        githubToken: ${{env.PUSH_BACK_TOKEN}}
         message: '[push-back] Push-back updated files during build'
-
-
-    - name: Remove files that shouldn't be cached
-      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-      run: |
-        rm -rf $HOME/.gradle/daemon $HOME/.gradle/build-scan-data $HOME/.gradle/kotlin-profile $HOME/.gradle/tmp $HOME/.gradle/workers || true
-        find $HOME/.gradle -name '*.lock' -type f -delete
