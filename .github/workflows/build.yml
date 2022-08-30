@@ -64,7 +64,6 @@ jobs:
 
     - name: Compile
       run: |
-        chmod -R 0777 .
         ./gradlew allClasses
         echo "DISABLE_COMPILATION=true" >> "$GITHUB_ENV"
 
