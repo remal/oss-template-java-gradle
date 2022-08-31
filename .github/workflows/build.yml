@@ -47,6 +47,16 @@ jobs:
       uses: gradle/wrapper-validation-action@v1
     - name: Cache Gradle
       uses: remal-github-actions/cache-gradle@main
+    - name: Archive workspace
+      run: |
+        tar -cz -f "/tmp/workspace-${{github.run_id}}.tar.gz" ~/.gradle
+    - name: Upload workspace archive
+      uses: actions/upload-artifact@v3
+      with:
+        name: workspace
+        path: '/tmp/workspace-${{github.run_id}}.tar.gz'
+        if-no-files-found: error
+        retention-days: 1
 
 
     - name: Compile
