@@ -45,21 +45,8 @@ jobs:
 
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
-    - name: Cache Gradle wrapper
-      id: gradle-wrapper
-      uses: actions/cache@v3
-      with:
-        key: ${{runner.os}}-gradle-wrapper-${{hashFiles('gradle-wrapper.properties')}}
-        path: |
-          ~/.gradle/wrapper/dists
-    - name: Cache Gradle caches
-      id: gradle-caches
-      uses: actions/cache@v3
-      with:
-        key: ${{runner.os}}-gradle-caches-${{hashFiles('gradle-wrapper.properties', '**/*.gradle', '**/gradle.properties')}}
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/notifications
+    - name: Cache Gradle
+      uses: remal-github-actions/cache-gradle@main
 
 
     - name: Compile
