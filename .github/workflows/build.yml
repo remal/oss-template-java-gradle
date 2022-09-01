@@ -50,7 +50,7 @@ jobs:
     - name: Archive workspace
       run: |
         mkdir -p ~/.gradle
-        tar -cz -f "/tmp/workspace-${{github.run_id}}.tar.gz" "~/.gradle"
+        tar -cz -f "/tmp/workspace-${{github.run_id}}.tar.gz" ~/.gradle
     - name: Upload workspace archive
       uses: actions/upload-artifact@v3
       with:
