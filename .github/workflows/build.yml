@@ -45,19 +45,22 @@ jobs:
 
     - name: Validate Gradle Wrapper
       uses: gradle/wrapper-validation-action@v1
-    - name: Cache Gradle
-      uses: remal-github-actions/cache-gradle@main
-    - name: Archive workspace
-      run: |
-        mkdir -p ~/.gradle
-        tar -cz -f "/tmp/workspace-${{github.run_id}}.tar.gz" ~/.gradle
-    - name: Upload workspace archive
-      uses: actions/upload-artifact@v3
+    - name: Cache Gradle wrapper
+      id: gradle-wrapper
+      uses: actions/cache@v3
       with:
-        name: workspace
-        path: '/tmp/workspace-${{github.run_id}}.tar.gz'
-        if-no-files-found: error
-        retention-days: 1
+        key: ${{runner.os}}-gradle-wrapper-${{hashFiles('**/gradle-wrapper.properties')}}
+        path: |
+          ${{env.GRADLE_USER_HOME || '~/.gradle'}}/wrapper/dists
+    - name: Cache Gradle caches
+      id: gradle-caches
+      uses: actions/cache@v3
+      with:
+        key: ${{runner.os}}-gradle-caches-${{hashFiles('**/gradle-wrapper.properties', '**/*.gradle', '**/*.gradle.kts', '**/gradle.properties')}}
+        path: |
+          ${{env.GRADLE_USER_HOME || '~/.gradle'}}/caches
+          ${{env.GRADLE_USER_HOME || '~/.gradle'}}/jdks
+          ${{env.GRADLE_USER_HOME || '~/.gradle'}}/notifications
 
 
     - name: Compile
@@ -78,3 +81,8 @@ jobs:
       with:
         githubToken: ${{env.PUSH_BACK_TOKEN}}
         message: '[push-back] Push-back updated files during build'
+
+
+    - name: Cleanup Gradle wrapper cache
+      run: |
+        rm -f ${{env.GRADLE_USER_HOME || '~/.gradle'}}/wrapper/dists/*/*/*.zip
