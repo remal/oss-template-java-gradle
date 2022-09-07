@@ -67,8 +67,3 @@ jobs:
       with:
         githubToken: ${{env.PUSH_BACK_TOKEN}}
         message: '[push-back] Push-back updated files during build'
-
-
-    - name: Cleanup Gradle wrapper cache
-      run: |
-        rm -f ${{env.GRADLE_USER_HOME || '~/.gradle'}}/wrapper/dists/*/*/*.zip
