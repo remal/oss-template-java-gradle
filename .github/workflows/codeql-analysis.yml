@@ -2,7 +2,7 @@ name: CodeQL
 
 on:
   schedule:
-  - cron: '29 3 * * *'
+  - cron: '29 3 * * *' # sync-with-template: adjust
   workflow_dispatch: { }
 
 jobs:
