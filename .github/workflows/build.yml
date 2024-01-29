@@ -44,7 +44,7 @@ jobs:
         sed -i 's/-all\.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
 
     - name: Validate Gradle Wrapper
-      uses: gradle/wrapper-validation-action@v1
+      uses: gradle/wrapper-validation-action@v2
     - name: Cache Gradle
       uses: remal-github-actions/cache-gradle@main
 
