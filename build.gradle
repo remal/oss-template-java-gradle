@@ -47,7 +47,7 @@ allprojects {
 
             conf.dependencies.addAll(
                 [
-                    'org.junit:junit-bom:5.13.0',
+                    'org.junit:junit-bom:5.13.1',
                 ].collect { project.dependencies.platform(it) }
             )
 
