@@ -55,7 +55,7 @@ allprojects {
                 [
                     // Static analysis annotations
                     'com.google.code.findbugs:jsr305:3.0.2',
-                    'com.google.errorprone:error_prone_annotations:2.39.0',
+                    'com.google.errorprone:error_prone_annotations:2.40.0',
                     'org.jetbrains:annotations:26.0.2',
 
                     // Annotation processors
