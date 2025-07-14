@@ -33,19 +33,22 @@ jobs:
             error => { if (error.response && error.response.status === 404) return false; else throw error; }
           )
           if (!configFileExists) {
-            core.info("Config file doesn't exist: " + configFile)
+            core.warning("Config file doesn't exist: " + configFile)
           }
-          core.setOutput('exists', configFileExists ? 'true' : 'false')
+          core.setOutput('configFileExists', configFileExists ? 'true' : 'false')
 
           const repository = await github.rest.repos.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
           }).then(it => it.data)
           const isTemplate = !!repository.is_template
+          if (isTemplate) {
+            core.warning("This repository is a template repository")
+          }
           core.setOutput('isTemplate', isTemplate ? 'true' : 'false')
 
     - uses: release-drafter/release-drafter@v6
       name: Update release draft
-      if: ${{fromJSON(steps.conditions.outputs.configFileExists) && !fromJSON(steps.conditions.outputs.isTemplate}}
+      if: ${{fromJSON(steps.conditions.outputs.configFileExists) && !fromJSON(steps.conditions.outputs.isTemplate)}}
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
