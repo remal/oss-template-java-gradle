@@ -67,7 +67,7 @@ allprojects {
                     // Test
 
                     // Jacoco
-                    'org.jacoco:org.jacoco.agent:0.8.14',
+                    'org.jacoco:org.jacoco.agent:0.8.15',
 
                     // Checkstyle
                     'com.puppycrawl.tools:checkstyle:13.4.2',
